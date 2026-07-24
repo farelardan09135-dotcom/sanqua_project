@@ -8,7 +8,7 @@
 
                 <!-- Logo -->
                 <div class="flex justify-center mb-5">
-                    <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-16 h-16 object-contain">
+                    <img src="{{ asset('images/logo_sanqua.jpeg') }}" alt="Logo" class="w-16 h-16 object-contain">
                 </div>
 
                 <!-- Title -->
