@@ -18,9 +18,9 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        $purchases = Purchase::with('supplier', 'user')
+        $purchases = Purchase::with(['supplier', 'user'])
             ->latest()
-            ->paginate(10);
+            ->get();
 
         return view('admin.pembelian.index', compact('purchases'));
     }

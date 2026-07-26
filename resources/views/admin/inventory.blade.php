@@ -1,21 +1,36 @@
 <x-admin-layout :title="'Inventory'">
 
     <!-- Page Title -->
-    <h1 class="text-2xl font-bold text-blue-700 mb-6">
-        Inventory
-    </h1>
+    <h1 class="text-2xl font-bold text-blue-700 mb-6">Inventory</h1>
+
+    @if (session('status'))
+        <div class="mb-4 px-4 py-3 rounded-xl bg-emerald-50 text-emerald-700 text-sm font-medium">
+            {{ session('status') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="mb-4 px-4 py-3 rounded-xl bg-red-50 text-red-600 text-sm font-medium">
+            {{ session('error') }}
+        </div>
+    @endif
 
     <div x-data="{
-            showAddModal: false,
-            showEditModal: false,
-            showFilterPanel: false,
-            editMode: false,
-            editingItem: { id: null, nama: '', kategori: '', stok: 0, harga: 0 },
-            openEdit(item, id) {
-                this.editingItem = { id: id, nama: item.nama, kategori: item.kategori, stok: item.stok, harga: item.harga };
-                this.showEditModal = true;
-            }
-        }">
+        showAddModal: false,
+        showEditModal: false,
+        showFilterPanel: false,
+        showDeleteModal: false,
+        editMode: false,
+        editingItem: { id: null, nama: '', kategori: '', stok: 0, harga: 0 },
+        deleteTarget: { id: null, nama: '' },
+        openEdit(item, id) {
+            this.editingItem = { id: id, nama: item.nama, kategori: item.kategori, stok: item.stok, harga: item.harga };
+            this.showEditModal = true;
+        },
+        openDelete(id, nama) {
+            this.deleteTarget = { id: id, nama: nama };
+            this.showDeleteModal = true;
+        }
+    }">
 
         <!-- Baris: SearchBar + Filter (popover) + tombol Edit & Tambah -->
         <div class="flex items-center justify-between gap-4 mb-4">
@@ -204,18 +219,13 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </button>
-                                        <form method="POST" action="{{ route('admin.inventory.destroy', $item->id) }}" onsubmit="return confirm('Yakin hapus {{ $item->nama }}?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button
-                                                type="submit"
-                                                :class="editMode ? 'opacity-100 scale-100' : 'opacity-40 scale-90 pointer-events-none'"
-                                                class="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-all duration-200">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                </svg>
-                                            </button>
-                                        </form>
+                                        <button type="button" @click="openDelete({{ $item->id }}, @js($item->nama))"
+                                            :class="editMode ? 'opacity-100 scale-100' : 'opacity-40 scale-90 pointer-events-none'"
+                                            class="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-all duration-200">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -232,56 +242,13 @@
 
             <!-- Pagination -->
             @if ($spareparts->hasPages())
-                <div class="flex items-center justify-center gap-1.5 mt-4 pt-4 border-t border-slate-100">
-
-                    @if ($spareparts->onFirstPage())
-                        <span class="w-8 h-8 flex items-center justify-center rounded-full text-slate-300 cursor-not-allowed">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </span>
-                    @else
-                        <a href="{{ $spareparts->previousPageUrl() }}"
-                            class="w-8 h-8 flex items-center justify-center rounded-full text-slate-500 bg-slate-50 hover:bg-slate-100 hover:text-slate-700 transition-all duration-150 active:scale-90">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                            </svg>
-                        </a>
-                    @endif
-
-                    @foreach ($spareparts->getUrlRange(1, $spareparts->lastPage()) as $page => $url)
-                        @if ($page == $spareparts->currentPage())
-                            <span class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold bg-blue-700 text-white shadow-md shadow-blue-700/30">
-                                {{ $page }}
-                            </span>
-                        @else
-                            <a href="{{ $url }}"
-                                class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-all duration-150 active:scale-90">
-                                {{ $page }}
-                            </a>
-                        @endif
-                    @endforeach
-
-                    @if ($spareparts->hasMorePages())
-                        <a href="{{ $spareparts->nextPageUrl() }}"
-                            class="w-8 h-8 flex items-center justify-center rounded-full text-slate-500 bg-slate-50 hover:bg-slate-100 hover:text-slate-700 transition-all duration-150 active:scale-90">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    @else
-                        <span class="w-8 h-8 flex items-center justify-center rounded-full text-slate-300 cursor-not-allowed">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </span>
-                    @endif
-
+                <div class="mt-4 pt-4 border-t border-slate-100">
+                    {{ $spareparts->appends(request()->query())->links() }}
                 </div>
             @endif
         </div>
 
-        <!-- Modal Tambah Sparepart (tidak berubah dari sebelumnya) -->
+        <!-- Modal Tambah Sparepart -->
         <div x-show="showAddModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
             <div x-show="showAddModal" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="showAddModal = false" class="absolute inset-0 bg-slate-900/50"></div>
             <div x-show="showAddModal" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
@@ -372,6 +339,26 @@
             </div>
         </div>
 
+        {{-- Modal Konfirmasi Hapus --}}
+        <div x-show="showDeleteModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
+            <div x-show="showDeleteModal" @click="showDeleteModal = false" class="absolute inset-0 bg-slate-900/50"></div>
+            <div x-show="showDeleteModal" class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
+                <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </div>
+                <h3 class="text-base font-bold text-slate-800 mb-1">Hapus Sparepart?</h3>
+                <p class="text-sm text-slate-500 mb-6">
+                    Yakin ingin menghapus <span class="font-semibold text-slate-700" x-text="deleteTarget.nama"></span>? Tindakan ini tidak bisa dibatalkan.
+                </p>
+                <form :action="`/admin/inventory/${deleteTarget.id}`" method="POST" class="flex items-center gap-3">
+                    @csrf @method('DELETE')
+                    <button type="button" @click="showDeleteModal = false" class="flex-1 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl px-4 py-2.5">Batal</button>
+                    <button type="submit" class="flex-1 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl px-4 py-2.5 shadow-md">Ya, Hapus</button>
+                </form>
+            </div>
+        </div>
     </div>
 
 </x-admin-layout>

@@ -5,6 +5,7 @@
     <div x-data="{
             cart: [],
             supplierId: '',
+            search: '',
             addToCart(item) {
                 const existing = this.cart.find(i => i.id === item.id);
                 if (!existing) {
@@ -43,10 +44,26 @@
                     </select>
                 </div>
 
-                <h2 class="text-base font-bold text-slate-800 mb-3">Pilih Barang</h2>
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-base font-bold text-slate-800">Pilih Barang</h2>
+                </div>
+
+                {{-- Search Bar --}}
+                <div class="mb-3">
+                    <div class="flex items-center gap-2 w-full h-10 px-4 rounded-xl bg-slate-50 border border-slate-200 shadow-sm focus-within:ring-2 focus-within:ring-blue-500/40 focus-within:border-blue-500 transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 10a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" x-model="search" placeholder="Cari sparepart..."
+                            class="w-full h-full text-sm bg-transparent border-none outline-none focus:ring-0 placeholder:text-slate-400">
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-100 overflow-y-auto pr-1">
                     @foreach ($spareparts as $item)
-                        <button type="button" @click="addToCart(@js($item))"
+                        <button type="button"
+                            x-show="search === '' || @js($item->nama).toLowerCase().includes(search.toLowerCase())"
+                            @click="addToCart(@js($item))"
                             class="text-left p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-150">
                             <p class="text-sm font-semibold text-slate-800">{{ $item->nama }}</p>
                             <p class="text-xs text-slate-400">Stok saat ini: {{ $item->stok }}</p>

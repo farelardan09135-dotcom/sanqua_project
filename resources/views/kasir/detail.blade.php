@@ -2,9 +2,10 @@
 
     <h1 class="text-xl font-bold text-blue-700 mb-4">Detail Transaksi</h1>
 
-    <div x-data="{
+        <div x-data="{
             items: @js($items),
             metode: '',
+            showCancelModal: false,
             get total() {
                 return this.items.reduce((sum, i) => sum + (i.harga_satuan * i.qty), 0);
             },
@@ -27,6 +28,10 @@
                 document.getElementById('cart-json').value = JSON.stringify(
                     this.items.map(i => ({ id: i.id, qty: i.qty }))
                 );
+            },
+            batalkanPesanan() {
+                localStorage.removeItem('kasir_cart');
+                window.location.href = '{{ route('kasir.index') }}';
             }
         }">
 
@@ -103,17 +108,43 @@
 
             </div>
 
-            {{-- Tombol Bayar --}}
+           {{-- Tombol Bayar --}}
             <div class="flex items-center gap-3">
-                <a href="{{ route('kasir.index') }}"
+                <button type="button" @click="showCancelModal = true"
                     class="text-center text-sm font-medium text-slate-500 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl px-6 py-3 transition-colors">
                     Batal
-                </a>
+                </button>
                 <button type="submit"
                     :disabled="!metode || items.length === 0"
                     class="flex-1 bg-blue-700 hover:bg-blue-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-base font-bold py-3 rounded-xl shadow-md transition-all duration-200 active:scale-95">
                     Bayar
                 </button>
+            </div>
+
+            {{-- Modal Konfirmasi Batalkan Pesanan --}}
+            <div x-show="showCancelModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
+                <div x-show="showCancelModal" @click="showCancelModal = false" class="absolute inset-0 bg-slate-900/50"></div>
+                <div x-show="showCancelModal" class="relative bg-white rounded-2xl shadow-xl w-full max-w-sm p-6 text-center">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-800 mb-1">Batalkan Pesanan?</h3>
+                    <p class="text-sm text-slate-500 mb-6">
+                        Semua barang di keranjang akan dihapus dan Anda akan kembali ke halaman Kasir.
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <button type="button" @click="showCancelModal = false"
+                            class="flex-1 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl px-4 py-2.5">
+                            Tidak
+                        </button>
+                        <button type="button" @click="batalkanPesanan()"
+                            class="flex-1 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl px-4 py-2.5 shadow-md">
+                            Ya, Batalkan
+                        </button>
+                    </div>
+                </div>
             </div>
         </form>
 

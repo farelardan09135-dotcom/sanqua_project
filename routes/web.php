@@ -37,7 +37,10 @@ Route::middleware(['auth', 'role:owner'])->prefix('owner')->group(function () {
     Route::get('/stok', [LaporanStokController::class, 'index'])->name('owner.stok'); 
     Route::get('/pembelian', [LaporanPembelianController::class, 'index'])->name('owner.pembelian');   
     Route::get('/forecast', [ForecastController::class, 'index'])->name('owner.forecast');
+
+    Route::get('/setting', fn () => view('owner.setting'))->name('owner.setting');
 });
+
 // Semua route admin diproteksi: harus login DAN role = admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 
