@@ -52,7 +52,7 @@ class UserController extends Controller
 
     /**
      * Toggle status aktif/nonaktif akun (bukan hapus permanen).
-     */
+    */
     public function toggleStatus(User $user)
     {
         if ($user->id === auth()->id()) {
