@@ -66,7 +66,6 @@ class UserController extends Controller
                 'status' => $register->status === 'aktif' ? 'nonaktif' : 'aktif',
             ]);
         } else {
-            // Jaga-jaga kalau ada user tanpa Register (misal akun lama)
             Register::create([
                 'user_id' => $user->id,
                 'dibuat_oleh' => auth()->id(),

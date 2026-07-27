@@ -23,7 +23,7 @@
             @csrf
 
             <div class="bg-white rounded-2xl shadow-sm p-5">
-                <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+                <div class="overflow-x-auto max-h-150 overflow-y-auto">
                     <table class="w-full text-sm">
                         <thead class="sticky top-0 bg-white">
                             <tr class="border-b border-slate-200 text-slate-500">

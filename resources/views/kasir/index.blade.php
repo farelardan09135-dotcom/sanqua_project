@@ -1,6 +1,6 @@
 <x-kasir-layout :title="'Kasir'">
     
-    <div x-data="{
+   <div x-data="{
         cart: JSON.parse(localStorage.getItem('kasir_cart') || '[]'),
         search: '',
         saveCart() {
@@ -72,7 +72,6 @@
                         class="w-full h-full text-sm bg-transparent border-none outline-none focus:ring-0 placeholder:text-slate-400">
                 </div>
             </div>
-        </form>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 items-start">
 
