@@ -39,7 +39,7 @@
 
                 @forelse ($barangMenipis as $barang)
                     <div class="flex items-center justify-between py-2.5 border-b border-slate-100 last:border-0">
-                        <span class="text-sm text-slate-700">{{ $barang->nama }}</span>
+                        <span class="text-sm text-slate-700">{{ $barang->nama_sparepart }}</span>
                         <span class="text-xs font-semibold text-amber-600">Sisa {{ $barang->stok }}</span>
                     </div>
                 @empty
@@ -86,7 +86,7 @@
                     @forelse ($barangHabis as $barang)
                         <div class="flex items-center justify-between py-2.5 border-b border-slate-100 last:border-0">
                             <div>
-                                <p class="text-sm font-medium text-slate-800">{{ $barang->nama }}</p>
+                                <p class="text-sm font-medium text-slate-800">{{ $barang->nama_sparepart }}</p>
                                 <p class="text-xs text-slate-400">{{ $barang->kategori ?? '-' }}</p>
                             </div>
                             <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-red-100 text-red-700">Habis</span>

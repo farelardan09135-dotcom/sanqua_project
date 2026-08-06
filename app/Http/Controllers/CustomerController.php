@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    /**
+     * Tampilkan daftar semua customer (untuk halaman admin/customer).
+     * Bisa difilter berdasarkan nama customer lewat query string ?search=.
+     */
     public function index(Request $request)
     {
         $customers = Customer::query()
@@ -18,6 +22,9 @@ class CustomerController extends Controller
         return view('admin.customer', compact('customers'));
     }
 
+    /**
+     * Simpan data customer baru dari form tambah customer.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -30,6 +37,9 @@ class CustomerController extends Controller
         return redirect()->route('admin.customer')->with('status', 'Customer berhasil ditambahkan.');
     }
 
+    /**
+     * Perbarui data customer yang sudah ada (nama & no WA).
+     */
     public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
@@ -42,6 +52,9 @@ class CustomerController extends Controller
         return redirect()->route('admin.customer')->with('status', 'Customer berhasil diperbarui.');
     }
 
+    /**
+     * Hapus data customer dari database.
+     */
     public function destroy(Customer $customer)
     {
         $customer->delete();

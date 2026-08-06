@@ -78,7 +78,7 @@
                 <tbody class="divide-y divide-slate-100">
                     @forelse ($spareparts as $item)
                         <tr class="hover:bg-slate-50 transition-colors {{ $item->status !== 'Tersedia' ? 'bg-amber-50/50' : '' }}">
-                            <td class="py-2 px-3 font-medium text-slate-800">{{ $item->nama }}</td>
+                            <td class="py-2 px-3 font-medium text-slate-800">{{ $item->nama_sparepart }}</td>
                             <td class="py-2 px-3 text-slate-500">{{ $item->kategori ?? '-' }}</td>
                             <td class="py-2 px-3 text-right text-slate-500">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
                             <td class="py-2 px-3 text-right font-semibold {{ $item->status !== 'Tersedia' ? 'text-amber-600' : 'text-slate-700' }}">{{ $item->stok }}</td>

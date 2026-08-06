@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 class PembelianController extends Controller
 {
     /**
-     * Daftar riwayat pembelian (list, bukan form input).
+     * Tampilkan daftar riwayat pembelian (list semua transaksi pembelian ke supplier).
      */
     public function index()
     {
@@ -26,7 +26,8 @@ class PembelianController extends Controller
     }
 
     /**
-     * Form untuk membuat pembelian baru.
+     * Tampilkan form untuk membuat pembelian baru,
+     * lengkap dengan daftar supplier & sparepart untuk dipilih.
      */
     public function create()
     {
@@ -37,8 +38,9 @@ class PembelianController extends Controller
     }
 
     /**
-     * Simpan pembelian baru: buat Purchase + PurchaseItem,
-     * tambah stok barang, catat ke Riwayat Stok (jenis: masuk).
+     * Simpan pembelian baru: buat baris Purchase + PurchaseItem,
+     * tambah stok tiap barang yang dibeli, dan catat pergerakan stok
+     * ke Riwayat Stok (jenis: masuk).
      */
     public function store(Request $request)
     {
@@ -90,7 +92,8 @@ class PembelianController extends Controller
     }
 
     /**
-     * Lihat detail 1 pembelian (rincian barang yang dibeli).
+     * Lihat detail 1 pembelian: data supplier, user yang input,
+     * dan rincian barang beserta jumlah/harga beli masing-masing.
      */
     public function show(Purchase $pembelian)
     {

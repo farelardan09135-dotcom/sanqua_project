@@ -11,7 +11,7 @@
             if (existing) {
                 if (existing.qty < item.stok) existing.qty++;
             } else {
-                this.cart.push({ id: item.id, nama: item.nama, harga: item.harga, stok: item.stok, qty: 1 });
+                this.cart.push({ id: item.id, nama: item.nama_sparepart, harga: item.harga, stok: item.stok, qty: 1 });
             }
             this.saveCart();
         },
@@ -83,11 +83,11 @@
                     @forelse ($spareparts as $item)
                         <button
                             type="button"
-                            x-show="search === '' || @js($item->nama).toLowerCase().includes(search.toLowerCase())"
+                            x-show="search === '' || @js($item->nama_sparepart).toLowerCase().includes(search.toLowerCase())"
                             @click="addToCart(@js($item))"
                             {{ $item->stok == 0 ? 'disabled' : '' }}
                             class="text-left p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-150 disabled:opacity-40 disabled:cursor-not-allowed">
-                            <p class="text-sm font-semibold text-slate-800">{{ $item->nama }}</p>
+                            <p class="text-sm font-semibold text-slate-800">{{ $item->nama_sparepart }}</p>
                             <p class="text-xs text-slate-400 mb-1">{{ $item->kategori }}</p>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm font-bold text-blue-700">Rp {{ number_format($item->harga, 0, ',', '.') }}</span>

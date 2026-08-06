@@ -34,7 +34,7 @@
                 @foreach ($transaction->items as $item)
                     <div class="flex items-center justify-between py-2 text-sm">
                         <div>
-                            <p class="font-medium text-slate-700">{{ $item->sparepart->nama ?? 'Barang dihapus' }}</p>
+                            <p class="font-medium text-slate-700">{{ $item->sparepart->nama_sparepart ?? 'Barang dihapus' }}</p>
                             <p class="text-xs text-slate-400">{{ $item->qty }} × Rp {{ number_format($item->harga_satuan, 0, ',', '.') }}</p>
                         </div>
                         <span class="font-semibold text-slate-700">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</span>

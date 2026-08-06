@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\DB;
  */
 class StockOpnameController extends Controller
 {
+    /**
+     * Tampilkan form Stock Opname berisi seluruh daftar sparepart,
+     * untuk diisi jumlah stok fisik hasil pengecekan gudang.
+     */
     public function index()
     {
         $spareparts = Sparepart::orderBy('nama')->get();
@@ -21,6 +25,11 @@ class StockOpnameController extends Controller
         return view('admin.stock-opname', compact('spareparts'));
     }
 
+    /**
+     * Proses hasil input stock opname: bandingkan stok fisik vs stok sistem
+     * untuk tiap barang, update stok kalau ada selisih, dan catat riwayatnya.
+     * Barang yang stoknya sudah cocok (selisih 0) dilewati, tidak dicatat.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([

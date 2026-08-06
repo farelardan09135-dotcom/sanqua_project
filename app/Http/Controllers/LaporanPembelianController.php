@@ -13,6 +13,10 @@ use Illuminate\Support\Carbon;
  */
 class LaporanPembelianController extends Controller
 {
+    /**
+     * Tampilkan daftar pembelian sesuai periode yang dipilih,
+     * lengkap dengan ringkasan total transaksi & total nilai pembelian.
+     */
     public function index(Request $request)
     {
         $periode = $request->input('periode', 'semua');
@@ -36,6 +40,11 @@ class LaporanPembelianController extends Controller
         return view('owner.pembelian', compact('pembelians', 'totalPembelian', 'totalNilai', 'periode'));
     }
 
+    /**
+     * Terjemahkan pilihan periode (harian/mingguan/dst) atau
+     * rentang tanggal custom menjadi pasangan [start, end] Carbon,
+     * dipakai untuk filter whereBetween di query.
+     */
     private function resolveDateRange(string $periode, ?string $dari, ?string $sampai): array
     {
         return match ($periode) {

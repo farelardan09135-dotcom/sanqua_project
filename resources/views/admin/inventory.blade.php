@@ -20,14 +20,14 @@
         showFilterPanel: false,
         showDeleteModal: false,
         editMode: false,
-        editingItem: { id: null, nama: '', kategori: '', stok: 0, harga: 0 },
-        deleteTarget: { id: null, nama: '' },
+        editingItem: { id: null, nama_sparepart: '', kategori: '', stok: 0, harga: 0 },
+        deleteTarget: { id: null, nama_sparepart: '' },
         openEdit(item, id) {
-            this.editingItem = { id: id, nama: item.nama, kategori: item.kategori, stok: item.stok, harga: item.harga };
+            this.editingItem = { id: id, nama: item.nama_sparepart, kategori: item.kategori, stok: item.stok, harga: item.harga };
             this.showEditModal = true;
         },
         openDelete(id, nama) {
-            this.deleteTarget = { id: id, nama: nama };
+            this.deleteTarget = { id: id, nama: nama_sparepart };
             this.showDeleteModal = true;
         }
     }">
@@ -195,7 +195,7 @@
                         @forelse ($spareparts as $index => $item)
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="py-2 px-3 text-slate-500">{{ $spareparts->firstItem() + $index }}</td>
-                                <td class="py-2 px-3 font-medium text-slate-800">{{ $item->nama }}</td>
+                                <td class="py-2 px-3 font-medium text-slate-800">{{ $item->nama_sparepart }}</td>
                                 <td class="py-2 px-3 text-slate-500">{{ $item->kategori }}</td>
                                 <td class="py-2 px-3 text-center text-slate-700">{{ $item->stok }}</td>
                                 <td class="py-2 px-3 text-slate-700">Rp {{ number_format($item->harga, 0, ',', '.') }}</td>
@@ -219,7 +219,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                             </svg>
                                         </button>
-                                        <button type="button" @click="openDelete({{ $item->id }}, @js($item->nama))"
+                                        <button type="button" @click="openDelete({{ $item->id }}, @js($item->nama_sparepart))"
                                             :class="editMode ? 'opacity-100 scale-100' : 'opacity-40 scale-90 pointer-events-none'"
                                             class="p-1.5 rounded-lg text-red-500 hover:bg-red-50 transition-all duration-200">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -264,7 +264,7 @@
                     @csrf
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Nama Sparepart</label>
-                        <input type="text" name="nama" required class="w-full h-11 px-3 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all" placeholder="Contoh: Kampas Rem Depan">
+                        <input type="text" name="nama_sparepart" required class="w-full h-11 px-3 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all" placeholder="Contoh: Kampas Rem Depan">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Kategori</label>
@@ -310,7 +310,7 @@
                     @method('PUT')
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Nama Sparepart</label>
-                        <input type="text" name="nama" x-model="editingItem.nama" required class="w-full h-11 px-3 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all">
+                        <input type="text" name="nama_sparepart" x-model="editingItem.nama_sparepart" required class="w-full h-11 px-3 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Kategori</label>
@@ -350,7 +350,7 @@
                 </div>
                 <h3 class="text-base font-bold text-slate-800 mb-1">Hapus Sparepart?</h3>
                 <p class="text-sm text-slate-500 mb-6">
-                    Yakin ingin menghapus <span class="font-semibold text-slate-700" x-text="deleteTarget.nama"></span>? Tindakan ini tidak bisa dibatalkan.
+                    Yakin ingin menghapus <span class="font-semibold text-slate-700" x-text="deleteTarget.nama_sparepart"></span>? Tindakan ini tidak bisa dibatalkan.
                 </p>
                 <form :action="`/admin/inventory/${deleteTarget.id}`" method="POST" class="flex items-center gap-3">
                     @csrf @method('DELETE')

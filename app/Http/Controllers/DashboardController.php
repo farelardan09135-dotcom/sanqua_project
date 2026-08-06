@@ -7,6 +7,11 @@ use App\Models\StockHistory;
 
 class DashboardController extends Controller
 {
+    /**
+     * Tampilkan dashboard utama Admin: ringkasan total barang,
+     * jumlah barang stok menipis & habis, daftar barang yang
+     * perlu diwaspadai, dan riwayat stock opname terbaru.
+     */
     public function index()
     {
         $totalBarang = Sparepart::count();
@@ -20,7 +25,7 @@ class DashboardController extends Controller
 
         // Daftar lengkap barang yang stoknya benar-benar habis (untuk modal)
         $barangHabis = Sparepart::where('stok', 0)
-            ->orderBy('nama')
+            ->orderBy('nama_sparepart')
             ->get();
 
         // 5 riwayat Stock Opname (penyesuaian) terbaru, untuk ditampilkan di dashboard

@@ -33,7 +33,7 @@
                     @forelse ($riwayat as $item)
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="py-2 px-3 text-slate-500">{{ $item->created_at->format('d/m/Y H:i') }}</td>
-                            <td class="py-2 px-3 font-medium text-slate-800">{{ $item->sparepart->nama ?? '-' }}</td>
+                            <td class="py-2 px-3 font-medium text-slate-800">{{ $item->sparepart->nama_sparepart ?? '-' }}</td>
                             <td class="py-2 px-3 text-center">
                                 @php
                                     $badge = match($item->jenis) {

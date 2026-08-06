@@ -18,7 +18,7 @@
         @forelse ($spareparts as $item)
             <div class="bg-white rounded-2xl shadow-sm p-4 border border-slate-100">
                 <div class="flex items-start justify-between mb-2">
-                    <p class="text-sm font-semibold text-slate-800">{{ $item->nama }}</p>
+                    <p class="text-sm font-semibold text-slate-800">{{ $item->nama_sparepart }}</p>
                     <span @class([
                         'inline-flex shrink-0 px-2 py-0.5 rounded-full text-[11px] font-semibold ml-2',
                         'bg-red-100 text-red-700' => $item->status === 'Habis',

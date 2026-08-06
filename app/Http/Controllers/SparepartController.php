@@ -27,7 +27,7 @@ class SparepartController extends Controller
         $spareparts = Sparepart::query()
             // Filter: cari berdasarkan nama (hanya jalan kalau ada input 'search')
             ->when($request->search, function ($query, $search) {
-                $query->where('nama', 'like', "%{$search}%");
+                $query->where('nama_sparepart', 'like', "%{$search}%");
             })
             // Filter: kategori (hanya jalan kalau ada input 'kategori')
             ->when($request->kategori, function ($query, $kategori) {
@@ -40,11 +40,11 @@ class SparepartController extends Controller
                     'harga_terendah'  => $query->orderBy('harga'),
                     'stok_terbanyak'  => $query->orderByDesc('stok'),
                     'stok_tersedikit' => $query->orderBy('stok'),
-                    default           => $query->orderBy('nama'),
+                    default           => $query->orderBy('nama_sparepart'),
                 };
             }, function ($query) {
                 // Default sort kalau user belum pilih filter 'sort' sama sekali
-                $query->orderBy('nama');
+                $query->orderBy('nama_sparepart');
             })
             ->paginate(10)
             ->withQueryString();
@@ -67,7 +67,7 @@ class SparepartController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_sparepart' => 'required|string|max:255',
             'kategori' => 'required|string|max:255',
             'stok' => 'required|integer|min:0',
             'harga' => 'required|integer|min:0',
@@ -89,7 +89,7 @@ class SparepartController extends Controller
     public function update(Request $request, Sparepart $sparepart)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama_sparepart' => 'required|string|max:255',
             'kategori' => 'required|string|max:255',
             'stok' => 'required|integer|min:0',
             'harga' => 'required|integer|min:0',

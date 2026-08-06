@@ -9,7 +9,7 @@
             addToCart(item) {
                 const existing = this.cart.find(i => i.id === item.id);
                 if (!existing) {
-                    this.cart.push({ id: item.id, nama: item.nama, qty: 1, harga_beli: 0 });
+                    this.cart.push({ id: item.id, nama: item.nama_sparepart, qty: 1, harga_beli: 0 });
                 }
             },
             removeItem(id) {
@@ -62,10 +62,10 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-100 overflow-y-auto pr-1">
                     @foreach ($spareparts as $item)
                         <button type="button"
-                            x-show="search === '' || @js($item->nama).toLowerCase().includes(search.toLowerCase())"
+                            x-show="search === '' || @js($item->nama_sparepart).toLowerCase().includes(search.toLowerCase())"
                             @click="addToCart(@js($item))"
                             class="text-left p-3 rounded-xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all duration-150">
-                            <p class="text-sm font-semibold text-slate-800">{{ $item->nama }}</p>
+                            <p class="text-sm font-semibold text-slate-800">{{ $item->nama_sparepart }}</p>
                             <p class="text-xs text-slate-400">Stok saat ini: {{ $item->stok }}</p>
                         </button>
                     @endforeach

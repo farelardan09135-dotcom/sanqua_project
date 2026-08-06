@@ -10,6 +10,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanPenjualanController extends Controller
 {
+    /**
+     * Tampilkan halaman Laporan Penjualan Owner: daftar transaksi
+     * sesuai periode yang dipilih, lengkap dengan ringkasan total
+     * transaksi & total pendapatan.
+     */
     public function index(Request $request)
     {
         $periode = $request->input('periode', 'semua');
@@ -33,6 +38,10 @@ class LaporanPenjualanController extends Controller
         return view('owner.penjualan', compact('transaksis', 'totalTransaksi', 'totalPendapatan', 'periode'));
     }
 
+    /**
+     * Unduh laporan penjualan sesuai periode yang dipilih
+     * dalam format Excel (.xlsx).
+     */
     public function export(Request $request)
     {
         $periode = $request->input('periode', 'semua');
@@ -43,6 +52,11 @@ class LaporanPenjualanController extends Controller
         return Excel::download(new LaporanPenjualanExport($start, $end), $filename);
     }
 
+    /**
+     * Terjemahkan pilihan periode (harian/mingguan/dst) atau
+     * rentang tanggal custom menjadi pasangan [start, end] Carbon,
+     * dipakai untuk filter whereBetween di query (index & export).
+     */
     private function resolveDateRange(string $periode, ?string $dari, ?string $sampai): array
     {
         return match ($periode) {

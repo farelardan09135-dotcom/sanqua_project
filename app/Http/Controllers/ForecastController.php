@@ -12,7 +12,7 @@ class ForecastController extends Controller
      * Menampilkan halaman Forecast: tren penjualan 3 bulan terakhir
      * per barang + prediksi bulan depan pakai Simple Moving Average (SMA),
      * serta ranking barang terlaris.
-     */
+    */
     public function index()
     {
         $jumlahBulan = 3;
@@ -45,7 +45,7 @@ class ForecastController extends Controller
 
             return [
                 'id' => $sparepart->id,
-                'nama' => $sparepart->nama,
+                'nama_sparepart' => $sparepart->nama_sparepart,
                 'kategori' => $sparepart->kategori,
                 'riwayat' => $riwayat,
                 'total_terjual' => $riwayat->sum('qty'),

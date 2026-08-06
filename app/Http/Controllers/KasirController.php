@@ -18,7 +18,7 @@ class KasirController extends Controller
      */
     public function index(Request $request)
     {
-        $spareparts = Sparepart::orderBy('nama')->get();
+        $spareparts = Sparepart::orderBy('nama_sparepart')->get();
 
         return view('kasir.index', compact('spareparts'));
     }
@@ -62,7 +62,7 @@ class KasirController extends Controller
 
             return [
                 'id' => $row['id'],
-                'nama' => $sparepart->nama ?? 'Barang tidak ditemukan',
+                'nama' => $sparepart->nama_sparepart ?? 'Barang tidak ditemukan',
                 'qty' => $row['qty'],
                 'harga_satuan' => $sparepart->harga ?? 0,
                 'stok' => $sparepart->stok ?? 0,
@@ -104,7 +104,7 @@ class KasirController extends Controller
             foreach ($cart as $row) {
                 $sparepart = $spareparts[$row['id']];
                 if ($sparepart->stok < $row['qty']) {
-                    abort(422, "Stok {$sparepart->nama} tidak mencukupi.");
+                    abort(422, "Stok {$sparepart->nama_sparepart} tidak mencukupi.");
                 }
                 $total += $sparepart->harga * $row['qty'];
             }
@@ -168,8 +168,8 @@ class KasirController extends Controller
     public function cekBarang(Request $request)
     {
         $spareparts = Sparepart::query()
-            ->when($request->search, fn ($q, $search) => $q->where('nama', 'like', "%{$search}%"))
-            ->orderBy('nama')
+            ->when($request->search, fn ($q, $search) => $q->where('nama_sparepart', 'like', "%{$search}%"))
+            ->orderBy('nama_sparepart')
             ->paginate(12)
             ->withQueryString();
 
@@ -205,7 +205,7 @@ class KasirController extends Controller
         $pesan .= "Tanggal: {$transaction->created_at->format('d/m/Y H:i')}\n\n";
 
         foreach ($transaction->items as $item) {
-            $namaBarang = $item->sparepart->nama ?? 'Barang dihapus';
+            $namaBarang = $item->sparepart->nama_sparepart ?? 'Barang dihapus';
             $pesan .= "{$namaBarang} ({$item->qty}x) - Rp ".number_format($item->subtotal, 0, ',', '.')."\n";
         }
 
@@ -228,6 +228,14 @@ class KasirController extends Controller
         $transaksis = Transaction::query()
             ->where('user_id', auth()->id())
             ->when($request->search, fn ($q, $search) => $q->where('no_transaksi', 'like', "%{$search}%"))
+            ->when($request->tanggal, fn ($q, $tanggal) => $q->whereDate('created_at', $tanggal))
+            ->when(
+                $request->bulan && !$request->tanggal, // tanggal spesifik override filter bulan
+                function ($q) use ($request) {
+                    [$tahun, $bulan] = explode('-', $request->bulan);
+                    $q->whereYear('created_at', $tahun)->whereMonth('created_at', $bulan);
+                }
+            )
             ->with('items.sparepart')
             ->latest()
             ->paginate(10)

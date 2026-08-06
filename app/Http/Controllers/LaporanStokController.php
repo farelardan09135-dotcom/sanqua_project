@@ -7,10 +7,15 @@ use Illuminate\Http\Request;
 
 class LaporanStokController extends Controller
 {
+    /**
+     * Tampilkan halaman Laporan Stok Owner: ringkasan inventaris
+     * (total jenis barang, total stok, nilai inventaris, barang
+     * menipis/habis) plus daftar barang yang bisa dicari & diurutkan.
+     */
     public function index(Request $request)
     {
         $base = Sparepart::query()
-            ->when($request->search, fn ($q, $search) => $q->where('nama', 'like', "%{$search}%"));
+            ->when($request->search, fn ($q, $search) => $q->where('nama_sparepart', 'like', "%{$search}%"));
 
         $totalJenisBarang = (clone $base)->count();
         $totalStok = (clone $base)->sum('stok');
@@ -22,6 +27,7 @@ class LaporanStokController extends Controller
 
         $query = (clone $base);
 
+        // Urutkan daftar barang sesuai pilihan sort dari user
         match ($sort) {
             'harga_termurah' => $query->orderBy('harga', 'asc'),
             'harga_termahal' => $query->orderBy('harga', 'desc'),

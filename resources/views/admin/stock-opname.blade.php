@@ -35,10 +35,10 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @foreach ($spareparts as $index => $item)
-                                <tr x-show="search === '' || @js($item->nama).toLowerCase().includes(search.toLowerCase())"
+                                <tr x-show="search === '' || @js($item->nama_sparepart).toLowerCase().includes(search.toLowerCase())"
                                     class="hover:bg-slate-50 transition-colors">
                                     <td class="py-2 px-3 font-medium text-slate-800">
-                                        {{ $item->nama }}
+                                        {{ $item->nama_sparepart }}
                                         <input type="hidden" name="items[{{ $index }}][id]" value="{{ $item->id }}">
                                     </td>
                                     <td class="py-2 px-3 text-slate-500">{{ $item->kategori ?? '-' }}</td>

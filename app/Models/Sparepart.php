@@ -13,7 +13,7 @@ class Sparepart extends Model
      * Kolom yang boleh diisi lewat mass assignment
      * (Sparepart::create([...]) di SparepartController).
      */
-    protected $fillable = ['nama', 'kategori', 'stok', 'harga'];
+    protected $fillable = ['nama_sparepart', 'kategori', 'stok', 'harga'];
 
     /**
      * Relasi one-to-many: satu sparepart bisa muncul di banyak

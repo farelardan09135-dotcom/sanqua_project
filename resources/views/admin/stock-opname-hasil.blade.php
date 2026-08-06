@@ -29,7 +29,7 @@
                     <tbody class="divide-y divide-slate-100">
                         @foreach ($hasilOpname as $row)
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="py-2 px-3 font-medium text-slate-800">{{ $row['nama'] }}</td>
+                                <td class="py-2 px-3 font-medium text-slate-800">{{ $row['nama_sparepart'] }}</td>
                                 <td class="py-2 px-3 text-right text-slate-500">{{ $row['stok_sistem'] }}</td>
                                 <td class="py-2 px-3 text-right text-slate-500">{{ $row['stok_fisik'] }}</td>
                                 <td class="py-2 px-3 text-right font-semibold {{ $row['selisih'] > 0 ? 'text-emerald-600' : 'text-red-600' }}">

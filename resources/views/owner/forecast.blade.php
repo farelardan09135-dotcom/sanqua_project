@@ -19,7 +19,7 @@
                 new Chart(ctx, {
                     type: 'bar',
                     data: {
-                        labels: @js($barangTerlaris->pluck('nama')),
+                        labels: @js($barangTerlaris->pluck('nama_sparepart')),
                         datasets: [{
                             label: 'Total Terjual (3 Bulan Terakhir)',
                             data: @js($barangTerlaris->pluck('total_terjual')),
@@ -61,7 +61,7 @@
                     <tbody class="divide-y divide-slate-100">
                         @foreach ($barangTerlaris as $item)
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="py-2 px-3 font-medium text-slate-800">{{ $item['nama'] }}</td>
+                                <td class="py-2 px-3 font-medium text-slate-800">{{ $item['nama_sparepart'] }}</td>
                                 @foreach ($item['riwayat'] as $bulan)
                                     <td class="py-2 px-3 text-center text-slate-600">{{ $bulan['qty'] }}</td>
                                 @endforeach

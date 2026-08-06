@@ -6,7 +6,7 @@
         <div class="grid grid-cols-2 gap-4 mb-5 text-sm">
             <div>
                 <p class="text-slate-500">Supplier</p>
-                <p class="font-semibold text-slate-800">{{ $purchase->supplier->nama ?? '-' }}</p>
+                <p class="font-semibold text-slate-800">{{ $purchase->supplier->nama_supplier ?? '-' }}</p>
             </div>
             <div>
                 <p class="text-slate-500">Tanggal</p>
@@ -18,7 +18,7 @@
             @foreach ($purchase->items as $item)
                 <div class="flex items-center justify-between py-2.5 text-sm">
                     <div>
-                        <p class="font-medium text-slate-700">{{ $item->sparepart->nama ?? 'Barang dihapus' }}</p>
+                        <p class="font-medium text-slate-700">{{ $item->sparepart->nama_sparepart ?? 'Barang dihapus' }}</p>
                         <p class="text-xs text-slate-400">{{ $item->qty }} × Rp {{ number_format($item->harga_beli, 0, ',', '.') }}</p>
                     </div>
                     <span class="font-semibold text-slate-700">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</span>

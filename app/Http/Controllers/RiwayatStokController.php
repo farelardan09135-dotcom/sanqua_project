@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class RiwayatStokController extends Controller
 {
+    /**
+     * Tampilkan halaman Riwayat Stok Admin: log semua pergerakan stok
+     * (masuk/keluar/penyesuaian). Bisa difilter berdasarkan jenis
+     * pergerakan dan dicari berdasarkan nama sparepart.
+     */
     public function index(Request $request)
     {
         $riwayat = StockHistory::with('sparepart')
