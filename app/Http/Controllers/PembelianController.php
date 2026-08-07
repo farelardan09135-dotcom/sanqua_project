@@ -32,7 +32,7 @@ class PembelianController extends Controller
     public function create()
     {
         $suppliers = Supplier::orderBy('nama_supplier')->get();
-        $spareparts = Sparepart::orderBy('nama')->get();
+        $spareparts = Sparepart::orderBy('nama_sparepart')->get();
 
         return view('admin.pembelian.create', compact('suppliers', 'spareparts'));
     }

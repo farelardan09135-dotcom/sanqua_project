@@ -20,7 +20,7 @@ class StockOpnameController extends Controller
      */
     public function index()
     {
-        $spareparts = Sparepart::orderBy('nama')->get();
+        $spareparts = Sparepart::orderBy('nama_sparepart')->get();
 
         return view('admin.stock-opname', compact('spareparts'));
     }
@@ -61,7 +61,7 @@ class StockOpnameController extends Controller
                     ]);
 
                     $hasilOpname[] = [
-                        'nama' => $sparepart->nama,
+                        'nama_sparepart' => $sparepart->nama_sparepart,
                         'stok_sistem' => $stokSistemLama,
                         'stok_fisik' => $stokFisik,
                         'selisih' => $selisih,
