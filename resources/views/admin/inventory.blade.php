@@ -26,7 +26,7 @@
             this.editingItem = { id: id, nama: item.nama_sparepart, kategori: item.kategori, stok: item.stok, harga: item.harga };
             this.showEditModal = true;
         },
-        openDelete(id, nama) {
+        openDelete(id, nama_sparepart) {
             this.deleteTarget = { id: id, nama: nama_sparepart };
             this.showDeleteModal = true;
         }

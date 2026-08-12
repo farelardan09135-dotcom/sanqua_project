@@ -2,82 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Register;
-use App\Models\User;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class SupplierController extends Controller
 {
     /**
-     * Tampilkan daftar semua user (Admin & Kasir). Bisa dicari
-     * berdasarkan nama lewat query string ?search=.
+     * Tampilkan daftar semua supplier. Bisa dicari berdasarkan
+     * nama supplier lewat query string ?search=.
      */
     public function index(Request $request)
     {
-        $users = User::query()
-            ->when($request->search, fn ($q, $search) => $q->where('name', 'like', "%{$search}%"))
-            ->orderBy('name')
+        $suppliers = Supplier::query()
+            ->when($request->search, fn ($q, $search) => $q->where('nama_supplier', 'like', "%{$search}%"))
+            ->orderBy('nama_supplier')
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.user', compact('users'));
+        return view('admin.supplier', compact('suppliers'));
     }
 
     /**
-     * Admin mendaftarkan akun baru (Admin/Kasir).
-     * Setiap pendaftaran dicatat ke tabel Register (siapa yang membuat).
+     * Simpan data supplier baru dari form tambah supplier.
      */
     public function store(Request $request)
     {
-       $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'role' => 'required|in:admin,kasir',
+        $validated = $request->validate([
+            'nama_supplier' => 'required|string|max:255',
+            'kontak' => 'required|string|max:20',
+            'alamat' => 'required|string|max:255',
         ]);
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'username' => $validated['username'],
-            'email' => $validated['email'],
-            'password' => $validated['password'],
-            'role' => $validated['role'],
-        ]);
-        Register::create([
-            'user_id' => $user->id,
-            'dibuat_oleh' => auth()->id(),
-            'status' => 'aktif',
-        ]);
+        Supplier::create($validated);
 
-        return redirect()->route('admin.user')->with('status', 'Akun berhasil didaftarkan.');
+        return redirect()->route('admin.supplier')->with('status', 'Supplier berhasil ditambahkan.');
     }
 
     /**
-     * Toggle status aktif/nonaktif akun (bukan hapus permanen).
-     * Admin tidak bisa menonaktifkan akunnya sendiri.
+     * Perbarui data supplier yang sudah ada (nama, kontak, alamat).
      */
-    public function toggleStatus(User $user)
+    public function update(Request $request, Supplier $supplier)
     {
-        if ($user->id === auth()->id()) {
-            return back()->with('error', 'Tidak bisa menonaktifkan akun sendiri.');
-        }
+        $validated = $request->validate([
+            'nama_supplier' => 'required|string|max:255',
+            'kontak' => 'required|string|max:20',
+            'alamat' => 'required|string|max:255',
+        ]);
 
-        $register = Register::where('user_id', $user->id)->latest()->first();
+        $supplier->update($validated);
 
-        if ($register) {
-            $register->update([
-                'status' => $register->status === 'aktif' ? 'nonaktif' : 'aktif',
-            ]);
-        } else {
-            Register::create([
-                'user_id' => $user->id,
-                'dibuat_oleh' => auth()->id(),
-                'status' => 'nonaktif',
-            ]);
-        }
+        return redirect()->route('admin.supplier')->with('status', 'Supplier berhasil diperbarui.');
+    }
 
-        return redirect()->route('admin.user')->with('status', 'Status akun berhasil diperbarui.');
+    /**
+     * Hapus data supplier dari database.
+     */
+    public function destroy(Supplier $supplier)
+    {
+        $supplier->delete();
+
+        return redirect()->route('admin.supplier')->with('status', 'Supplier berhasil dihapus.');
     }
 }

@@ -31,6 +31,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['auth', 'role:owner'])->prefix('owner')->group(function () {
     Route::get('/dashboard', [OwnerDashboardController::class, 'index'])->name('owner.dashboard');
+    Route::delete('/catatan/{transaction:id}', [OwnerDashboardController::class, 'destroyCatatan'])->name('owner.catatan.destroy');
     Route::get('/penjualan', [LaporanPenjualanController::class, 'index'])->name('owner.penjualan');
     Route::get('/penjualan/export', [LaporanPenjualanController::class, 'export'])->name('owner.penjualan.export');
 
