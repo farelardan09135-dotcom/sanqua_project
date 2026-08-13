@@ -11,7 +11,6 @@
         </a>
     </div>
 
-    {{-- Ringkasan --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div class="bg-white rounded-2xl shadow-sm p-5">
             <p class="text-xs font-medium text-slate-400 uppercase tracking-wide mb-1">Total Transaksi</p>

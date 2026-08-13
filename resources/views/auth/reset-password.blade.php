@@ -103,10 +103,6 @@
             </div>
         </div>
 
-        <p class="text-center text-xs text-slate-500 mt-6">
-            © {{ date('Y') }} — Sistem Aman & Terpercaya
-        </p>
-
     </div>
 
 </x-guest-layout>
