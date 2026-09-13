@@ -9,7 +9,7 @@
         addToCart(item) {
             const existing = this.cart.find(i => i.id === item.id);
             if (existing) {
-                if (existing.qty < item.stok) existing.qty++;
+                if (existing.qty > item.stok) existing.qty++;
             } else {
                 this.cart.push({ id: item.id, nama: item.nama_sparepart, harga: item.harga, stok: item.stok, qty: 1 });
             }

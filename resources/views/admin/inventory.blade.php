@@ -23,7 +23,7 @@
         editingItem: { id: null, nama_sparepart: '', kategori: '', stok: 0, harga: 0 },
         deleteTarget: { id: null, nama_sparepart: '' },
         openEdit(item, id) {
-            this.editingItem = { id: id, nama: item.nama_sparepart, kategori: item.kategori, stok: item.stok, harga: item.harga };
+            this.editingItem = { id: id, nama_sparepart: item.nama_sparepart, kategori: item.kategori, stok: item.stok, harga: item.harga };
             this.showEditModal = true;
         },
         openDelete(id, nama_sparepart) {
@@ -306,8 +306,8 @@
                     </button>
                 </div>
                 <form method="POST" :action="`/admin/inventory/${editingItem.id}`" class="space-y-4">
-                    @csrf
-                    @method('PUT')
+                     @csrf      
+                     @method('PUT')
                     <div>
                         <label class="block text-sm font-medium text-slate-600 mb-1">Nama Sparepart</label>
                         <input type="text" name="nama_sparepart" x-model="editingItem.nama_sparepart" required class="w-full h-11 px-3 text-sm rounded-xl bg-slate-50 border border-slate-200 focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all">
